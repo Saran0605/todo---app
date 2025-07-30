@@ -10,10 +10,26 @@ const PORT = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const PASSWORD = "XMhIhRgcvfAGeMJW";
+const DATABASE_NAME = 'todo';
+const CONNECTION_URI = `mongodb+srv://database.sskxbrh.mongodb.net/?retryWrites=true&w=majority&appName=database`;
+
+mongoose.set('debug', true);
+
+async function connectToMongoDB() {
+  try {
+    await mongoose.connect(CONNECTION_URI, {
+      dbName: DATABASE_NAME,
+      user: 'Pret_05',
+      pass: PASSWORD,
+    });
+    console.log("MongoDB Atlas connected successfully");
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+  }
+}
+
+connectToMongoDB();
 
 app.get('/api/todos', async (req, res) => {
   const todos = await Todo.find();
